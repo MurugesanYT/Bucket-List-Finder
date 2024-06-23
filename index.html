@@ -1,0 +1,92 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bucket List Explorer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 100%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #fetchBtn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #fetchBtn:hover {
+            background-color: #0056b3;
+        }
+        #bucketListItem {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: auto; /* Adjust height based on content */
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Bucket List Explorer</h1>
+        <button id="fetchBtn">Fetch Bucket List Item</button>
+        <div id="bucketListItem"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#fetchBtn').click(function() {
+                fetchBucketListItem();
+            });
+        });
+
+        function fetchBucketListItem() {
+            $.ajax({
+                method: 'GET',
+                url: 'https://api.api-ninjas.com/v1/bucketlist',
+                headers: { 'X-Api-Key': 'gej/LZaIpdCdX1iDG4QG+w==5Ndlcn9fAJpKOTmN' },
+                contentType: 'application/json',
+                success: function(result) {
+                    console.log(result);
+                    displayBucketListItem(result);
+                },
+                error: function ajaxError(jqXHR) {
+                    console.error('Error: ', jqXHR.responseText);
+                }
+            });
+        }
+
+        function displayBucketListItem(item) {
+            // Check if the response is an object and contains the 'item' key
+            if (typeof item === 'object' && item.item) {
+                // Set the text content of #bucketListItem to the value of the 'item' key
+                $('#bucketListItem').text(item.item);
+            } else {
+                // If the response is not as expected, display an error message
+                $('#bucketListItem').text('Failed to fetch bucket list item.');
+            }
+        }
+    </script>
+</body>
+</html>
